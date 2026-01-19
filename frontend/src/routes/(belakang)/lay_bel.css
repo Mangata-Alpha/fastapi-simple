@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin 'flowbite/plugin';
+@source "../../../node_modules/flowbite-svelte/dist";
+@source "../../../node_modules/flowbite-svelte-icons/dist";
+
+:root{
+    font-family: 'Montserrat', sans-serif;
+}
+
+:global(.ProseMirror) {
+    min-height: 200px;
+    padding: 10px;
+    outline: none;
+}
+
+:global(.ProseMirror h1) {
+    min-height: 200px;
+    padding: 10px;
+    outline: none;
+    font-size: 3rem;
+}:global(.ProseMirror h2) {
+    min-height: 200px;
+    padding: 10px;
+    outline: none;
+    font-size: 2.2rem;
+}:global(.ProseMirror h3) {
+    min-height: 200px;
+    padding: 10px;
+    outline: none;
+    font-size: 2rem;
+}:global(.ProseMirror h4) {
+    min-height: 200px;
+    padding: 10px;
+    outline: none;
+    font-size: 1.5rem;
+}

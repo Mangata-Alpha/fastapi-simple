@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin 'flowbite/plugin';
+@source "../../../node_modules/flowbite-svelte/dist";
+@source "../../../node_modules/flowbite-svelte-icons/dist";
+
+
+:root{
+    font-family: 'Montserrat', sans-serif;
+}
+
+@theme {
+  --font-kansas: "New Kansas", sans-serif; 
+  --font-mont: "Montserrat", sans-serif;
+}
+
+@font-face {
+    font-family: 'New Kansas';
+    src: url('../../lib/font/NewKansas-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'New Kansas';
+    src: url('../../lib/font/NewKansas-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+.dalam{
+    position: relative;
+}
+.nav{
+    @apply w-full flex flex-col items-start sticky pl-[3.5vw] top-0 bg-white;
+    z-index: 10;
+    transition: all 0.4s ease-in-out;
+}
+.logo{
+    @apply font-kansas font-bold;
+    font-size: clamp(5rem, calc(6.219vw + 2rem), 9rem);
+    transition: font-size 0.4s ease-in-out;
+}
+.nav.scrolled {
+    @apply drop-shadow-xl shadow-gray-400;
+}
+.nav.scrolled .logo{
+    font-size: clamp(2rem, calc(3.219vw + 1rem), 4rem);
+}
+.menu{
+    @apply font-mont font-bold flex flex-row;
+}
+.menu .home{
+    @apply pl-0 pb-[1dvh];
+}
+.menu li{
+    @apply px-[2.5vw] tracking-[0.3em];
+    font-size: clamp(1rem, calc(0.315vw + 1rem), 3rem);
+    transition: font-size 0.4s ease-in-out;
+}
+
+.menu.scrolled li{
+    font-size: 1rem;
+    transition: font-size 0.4s ease-in-out;
+}
