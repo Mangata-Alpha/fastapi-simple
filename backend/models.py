@@ -6,11 +6,23 @@ class BlogCatLink(SQLModel, table=True):
     id_cat: int | None = Field(default=None, foreign_key="category.id_cat", primary_key=True)
     id_blog: int | None = Field(default=None, foreign_key="blog.id", primary_key=True)
 
-class Category(SQLModel, table=True):
-    id_cat: int | None = Field(default=None, primary_key=True)
+class CategoryBase(SQLModel):
     name: str = Field(index=True)
     desc: str
+
+class Category(CategoryBase, table=True):
+    id_cat: int | None = Field(default=None, primary_key=True)
     list_post: list["Blog"] = Relationship(back_populates="list_category", link_model=BlogCatLink) #Ngasi kunci password ke bagian post kalau pengen liat list
+
+class CategoryPublic(CategoryBase):
+    id_cat: int
+
+class CategoryCreate(CategoryBase):
+    pass
+
+class CategoryUpdate(SQLModel):
+    name: str | None = None
+    desc: str | None = None
 
 class BlogBase(SQLModel): #Yah..ini dasarnya. Hantuin tabel Blog dimana-mana
     
@@ -33,12 +45,6 @@ class BlogPublic(BlogBase): #agar bisa diliat publik. Kalau kasus ini diliat sve
     slug: str
     created_date: datetime
     list_category: list["CategoryPublic"] = [] 
-
-# Kamu juga butuh ini agar tidak error
-class CategoryPublic(SQLModel):
-    id_cat: int
-    name: str
-    desc: str
 
 class BlogCreate(BlogBase): #disini nampilin base. User cuma bisa isi data baru dengan format field yang ada di base
     category_id: list[int] = []

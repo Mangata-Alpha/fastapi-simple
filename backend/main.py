@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 import re
 
 #Import file model
-from models import Blog, BlogCreate, BlogPublic, BlogUpdate, Category, BlogCatLink
+from models import Blog, BlogCreate, BlogPublic, BlogUpdate, Category, BlogCatLink, CategoryBase, CategoryCreate, CategoryPublic, CategoryUpdate
 
 sqlite_file_name = "database_blog.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -126,19 +126,33 @@ def edit_post(id:int, blog_update: BlogUpdate, session: SessionDep):
     session.refresh(blog)
     return blog
 
-@app.get("/category") #response model buat sistem cuma ngambil field model yang perlu
+@app.get("/category", response_model=list[CategoryPublic]) #response model buat sistem cuma ngambil field model yang perlu
 def baca_cat(session: SessionDep) -> list[Category]:
     cat = session.exec(select(Category).order_by(desc(Category.id_cat))).all()
     return cat
 
-@app.post("/category") #response model buat sistem cuma ngambil field model yang perlu
-def tambah_cat(cat: Category, session: SessionDep):
+@app.post("/category", response_model=CategoryPublic) #response model buat sistem cuma ngambil field model yang perlu
+def tambah_cat(add_cat: CategoryCreate, session: SessionDep):
     #blog: Blog, ini parameter blog disuruh ngikut bentukannya class Blog
-    db_cat = Category.model_validate(cat)
+    db_cat = Category.model_validate(add_cat)
     session.add(db_cat)
     session.commit()
     session.refresh(db_cat)
     return db_cat
+
+@app.patch("/blog/{id_cat}", response_model=CategoryPublic)
+def edit_cat(edit_cat:CategoryUpdate, session:SessionDep, id_cat:int):
+    ganti_cat = session.get(Category, id_cat)
+    if not ganti_cat:
+        raise HTTPException(status_code=404, detail="Category ilang")
+    
+    data_category = edit_cat.model_dump(exclude_unset=True)
+    #sekarang kirim data ke query UPDATE
+    ganti_cat.sqlmodel_update(data_category)
+    session.add(ganti_cat)
+    session.commit()
+    session.refresh(ganti_cat)
+    return ganti_cat
 
 @app.get("/")
 async def Home():

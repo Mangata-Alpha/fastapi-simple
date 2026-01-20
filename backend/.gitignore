@@ -1,0 +1,11 @@
+# Lingkungan Virtual (Virtual Environment)
+.venv/
+venv/
+env/
+
+### Database ###
+*.db
+*.sqlite3
+
+__pycache__/
+*.pyc
